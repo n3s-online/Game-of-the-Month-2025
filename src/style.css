@@ -95,7 +95,6 @@ footer {
     justify-content: space-between;
     align-items: end;
     position: relative;
-    overflow: hidden;
     min-height: fit-content;
     margin-top: 5px;
 }

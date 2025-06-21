@@ -1,10 +1,10 @@
 import action from './music/action.mp3';
 import click from '../../assets/click.wav';
-import death from './sounds/death.wav';
+import explode from '../../assets/explode.wav';
 import fire from './sounds/fire.wav';
 import logo from './logo.webp';
 import menu from './music/menu.mp3';
-import mine from './sounds/mine.wav';
+import mine from '../../assets/mine.wav';
 import riser from './music/riser.mp3';
 import {FONT} from '../../shared/style.ts';
 import {audioContext, downloadAndDecode, setupSoundEffect} from '../../audio.ts';
@@ -334,7 +334,7 @@ export function may() {
     const backgroundContext = backgroundCanvas.getContext('2d')!;
 
     const clickAudio = setupSoundEffect(click);
-    const deathAudio = setupSoundEffect(death);
+    const explodeAudio = setupSoundEffect(explode);
     const mineAudio = setupSoundEffect(mine);
     const riserAudio = setupSoundEffect(riser);
 
@@ -1077,7 +1077,7 @@ export function may() {
                 const score = calculateScore();
                 const highScoreBeaten = score > (storage.get('highScore') ?? 0);
                 if (highScoreBeaten) storage.set('highScore', score);
-                deathAudio.play();
+                explodeAudio.play();
                 liveState.gameOverTimeoutId = setTimeout(() => {
                     (state as State.Play).state = {type: 'gameOver', highScoreBeaten};
                     setTrack('menu');

@@ -6,6 +6,7 @@ import {february} from './games/february';
 import {march} from './games/march';
 import {april} from './games/april';
 import {may} from './games/may';
+import {june} from './games/june';
 
 const games = [
     january,
@@ -13,7 +14,7 @@ const games = [
     march,
     april,
     may,
-    makeTextbox('Coming Saturday June 21st'),
+    june,
     makeTextbox('Coming Saturday July 19th'),
     makeTextbox('Coming Saturday August 16th'),
     makeTextbox('Coming Saturday September 20th'),
@@ -22,7 +23,7 @@ const games = [
     makeTextbox('Coming Saturday December 20th'),
 ];
 
-const defaultMonthIndex = 4;
+const defaultMonthIndex = 5;
 
 let monthIndex: number;
 let callback: (() => void) | undefined = undefined;

@@ -142,7 +142,7 @@ export function modulo(a: number, b: number) {
     return ((a % b) + b) % b;
 }
 
-export function setupBufferSource(buffer: AudioBuffer) {
+export function setupBufferSource(buffer: AudioBuffer, when?: number) {
     const gain = audioContext.createGain();
     gain.gain.value = 0;
     gain.connect(musicGain);
@@ -151,7 +151,7 @@ export function setupBufferSource(buffer: AudioBuffer) {
     source.buffer = buffer;
     source.loop = true;
     source.connect(gain);
-    source.start();
+    source.start(when);
 
     return {source, gain};
 }
