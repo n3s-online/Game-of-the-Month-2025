@@ -2,7 +2,7 @@ import './style.css';
 import {initSettings} from './settings.ts';
 import {loadGame} from './gameManager.ts';
 import {makeTextbox} from './makeTextbox.ts';
-import click from './assets/click.wav';
+import click from './assets/click.ogg';
 import {settingsMusicVolumeInput, settingsSoundEffectsVolumeInput} from './dom.ts';
 import {preload} from './preload.ts';
 

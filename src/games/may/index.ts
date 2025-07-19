@@ -1,11 +1,11 @@
-import action from './music/action.mp3';
-import click from '../../assets/click.wav';
-import explode from '../../assets/explode.wav';
-import fire from './sounds/fire.wav';
+import action from './music/action.ogg';
+import click from '../../assets/click.ogg';
+import explode from '../../assets/explode.ogg';
+import fire from './sounds/fire.ogg';
 import logo from './logo.webp';
-import menu from './music/menu.mp3';
-import mine from '../../assets/mine.wav';
-import riser from './music/riser.mp3';
+import menu from './music/menu.ogg';
+import mine from '../../assets/mine.ogg';
+import riser from './music/riser.ogg';
 import {FONT} from '../../shared/style.ts';
 import {audioContext, downloadAndDecode, setupSoundEffect} from '../../audio.ts';
 import {canvas, context, setOverlay} from '../../dom';

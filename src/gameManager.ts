@@ -1,5 +1,5 @@
 import {startStatic} from './static.ts';
-import {clearOverlay, monthSpan, nextButton, prevButton} from './dom.ts';
+import {clearOverlay, context, monthSpan, nextButton, prevButton} from './dom.ts';
 import {makeTextbox} from './makeTextbox.ts';
 import {january} from './games/january';
 import {february} from './games/february';
@@ -7,6 +7,7 @@ import {march} from './games/march';
 import {april} from './games/april';
 import {may} from './games/may';
 import {june} from './games/june';
+import {july} from './games/july';
 
 const games = [
     january,
@@ -15,7 +16,7 @@ const games = [
     april,
     may,
     june,
-    makeTextbox('Coming Saturday July 19th'),
+    july,
     makeTextbox('Coming Saturday August 16th'),
     makeTextbox('Coming Saturday September 20th'),
     makeTextbox('Coming Saturday October 18th'),
@@ -23,7 +24,7 @@ const games = [
     makeTextbox('Coming Saturday December 20th'),
 ];
 
-const defaultMonthIndex = 5;
+const defaultMonthIndex = 6;
 
 let monthIndex: number;
 let callback: (() => void) | undefined = undefined;
@@ -48,6 +49,7 @@ export function openPage(runner: () => () => void) {
         callback = undefined;
     }
     clearOverlay();
+    context.reset();
     startStatic(() => (callback = runner()));
 }
 

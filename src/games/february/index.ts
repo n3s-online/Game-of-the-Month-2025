@@ -1,7 +1,7 @@
-import click from '../../assets/click.wav';
+import click from '../../assets/click.ogg';
 import logo from './logo.webp';
-import music from './music.mp3';
-import win from '../../assets/win.wav';
+import music from './music.ogg';
+import win from '../../assets/win.ogg';
 import {FONT, UI_BLACK, UI_WHITE} from '../../shared/style.ts';
 import {Graph, makeGraph} from './graph.ts';
 import {canvas, context, overlay, setOverlay} from '../../dom.ts';

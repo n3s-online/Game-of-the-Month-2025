@@ -12,7 +12,7 @@ Play them all here: https://gotm.doteye.online
 | April     | Kornivore                      | A corn maze game where the walls are edible.                                                            |
 | May       | Star Squad                     | A spaced-themed survival game where you hire crewmates to operate different controls on your ship.      |
 | June      | Snailsweeper                   | A variant of Minesweeper with a snail that chases you, and if it touches you, you die.                  |
-| July      | Coming Saturday July 19th      |                                                                                                         |
+| July      | Key Pals                       | A co-op word game where players work together to spell a word.                                          |
 | August    | Coming Saturday August 16th    |                                                                                                         |
 | September | Coming Saturday September 20th |                                                                                                         |
 | October   | Coming Saturday October 18th   |                                                                                                         |

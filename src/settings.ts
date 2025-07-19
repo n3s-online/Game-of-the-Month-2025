@@ -9,8 +9,8 @@ import {
     settingsSoundEffectsVolumeInput,
 } from './dom.ts';
 import {audioContext, musicGain, setupMusic, setupSoundEffect, soundEffectsGain} from './audio.ts';
-import music from './games/january/music.mp3';
-import click from './assets/click.wav';
+import music from './games/january/music.ogg';
+import click from './assets/click.ogg';
 
 export function initSettings() {
     const RESET_BUTTON_DEFAULT_TEXT = 'Reset';

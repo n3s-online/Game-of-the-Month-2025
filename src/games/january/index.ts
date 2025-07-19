@@ -1,10 +1,10 @@
 import {choice, distance, randomInt} from '../../util.ts';
-import music from './music.mp3';
+import music from './music.ogg';
 import logo from './logo.webp';
-import click from '../../assets/click.wav';
-import eat from '../../assets/eat.wav';
-import lose from '../../assets/lose.wav';
-import win from '../../assets/win.wav';
+import click from '../../assets/click.ogg';
+import eat from '../../assets/eat.ogg';
+import lose from '../../assets/lose.ogg';
+import win from '../../assets/win.ogg';
 import {setupStorage} from '../../shared/storage.ts';
 import {setupMusic, setupSoundEffect} from '../../audio.ts';
 import {canvas, context, setOverlay} from '../../dom.ts';

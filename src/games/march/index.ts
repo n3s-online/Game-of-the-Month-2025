@@ -1,21 +1,21 @@
-import a3 from './sounds/a3.mp3';
-import b3 from './sounds/b3.mp3';
-import chord from './sounds/chord.mp3';
-import click from '../../assets/click.wav';
-import d3 from './sounds/d3.mp3';
-import d4 from './sounds/d4.mp3';
-import e3 from './sounds/e3.mp3';
-import e4 from './sounds/e4.mp3';
-import g3 from './sounds/g3.mp3';
-import lick from './sounds/lick.mp3';
+import a3 from './sounds/a3.ogg';
+import b3 from './sounds/b3.ogg';
+import chord from './sounds/chord.ogg';
+import click from '../../assets/click.ogg';
+import d3 from './sounds/d3.ogg';
+import d4 from './sounds/d4.ogg';
+import e3 from './sounds/e3.ogg';
+import e4 from './sounds/e4.ogg';
+import g3 from './sounds/g3.ogg';
+import lick from './sounds/lick.ogg';
 import logo from './logo.webp';
-import music1 from './music/01drums.mp3';
-import music2 from './music/02shaker.mp3';
-import music3 from './music/03guitar.mp3';
-import music4 from './music/04groove.mp3';
-import music5 from './music/05strings.mp3';
-import music6 from './music/06full.mp3';
-import unisonBend from './sounds/unisonBend.mp3';
+import music1 from './music/1drums.ogg';
+import music2 from './music/2shaker.ogg';
+import music3 from './music/3guitar.ogg';
+import music4 from './music/4groove.ogg';
+import music5 from './music/5strings.ogg';
+import music6 from './music/6full.ogg';
+import bend from './sounds/bend.ogg';
 import {FONT, UI_BLACK} from '../../shared/style.ts';
 import {audioContext, downloadAndDecode, setupSoundEffect} from '../../audio.ts';
 import {canvas, context, overlay, setOverlay} from '../../dom.ts';
@@ -130,7 +130,7 @@ export function march() {
     const chordAudio = setupSoundEffect(chord);
     const clickAudio = setupSoundEffect(click);
     const lickAudio = setupSoundEffect(lick);
-    const unisonBendAudio = setupSoundEffect(unisonBend);
+    const bendAudio = setupSoundEffect(bend);
     const hitAudios = [d3, e3, g3, a3, b3, d4, e4].map(setupSoundEffect);
     const storage = setupStorage('march');
 
@@ -483,7 +483,7 @@ export function march() {
         ).timeBonus.toFixed(1);
 
         if (getBlocksHit() === blocksTemplate.length - 1) {
-            unisonBendAudio.play();
+            bendAudio.play();
             setOverlay(`
                 <div class="center" style="color: var(--ui-black); display: flex; flex-direction: column; text-align: center; gap: 5px;">
                     <h1>BOARD CLEAR! 🏆</h1>
