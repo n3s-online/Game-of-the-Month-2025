@@ -9,9 +9,9 @@
         "preview": "vite preview"
     },
     "devDependencies": {
-        "prettier": "^3.4.2",
-        "typescript": "~5.6.2",
-        "vite": "^6.3.2"
+        "prettier": "^3.6.2",
+        "typescript": "~5.9.2",
+        "vite": "^7.1.2"
     },
     "dependencies": {
         "@types/ga-gtag": "^1.2.0",
