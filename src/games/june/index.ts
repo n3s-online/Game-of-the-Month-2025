@@ -780,7 +780,6 @@ export function june() {
 
         if (trail.has(`${position.x},${position.y}`)) {
             takeDamage(0.1, "You were poisoned by the snail's trail.");
-            hissAudio.currentTime = 0;
             hissAudio.play();
             draw();
             setPlayingOverlay();
@@ -793,7 +792,6 @@ export function june() {
 
         if (!detonated && !clear.has(key)) {
             ++state.tilesMined;
-            mineAudio.currentTime = 0;
             mineAudio.play();
             clear.add(key);
             flags.delete(key);
@@ -821,7 +819,6 @@ export function june() {
 
             draw();
             takeDamage(0.5, 'You exploded.');
-            explodeAudio.currentTime = 0;
             explodeAudio.play();
         }
 

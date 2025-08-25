@@ -91,7 +91,7 @@ interface Enemy {
     direction: number;
     turretDirection: number;
     fireStartTime?: number;
-    lastFireAudio?: HTMLAudioElement;
+    lastFireAudio?: ReturnType<typeof setupSoundEffect>;
     lastShotTime?: number;
     lastShotAttemptTime?: number;
 }
@@ -121,7 +121,7 @@ namespace State {
                 lastHitTime?: number;
                 lastEnemySpawnTime?: number;
                 fireStartTime?: number;
-                lastFireAudio?: HTMLAudioElement;
+                lastFireAudio?: ReturnType<typeof setupSoundEffect>;
                 mineStartTime?: number;
                 repairStartTime?: number;
                 lastPerkCheckTime?: number;

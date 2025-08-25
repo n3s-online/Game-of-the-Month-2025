@@ -18,7 +18,7 @@ import {FONT, UI_WHITE} from '../../shared/style.ts';
 import {canvas, context, overlay, setOverlay} from '../../dom';
 import {choice, modulo} from '../../util.ts';
 import {create} from 'random-seed';
-import {setupMusic, setupSoundEffect} from '../../audio';
+import {setupSoundEffect, setupMusic} from '../../audio';
 import {setupStorage} from '../../shared/storage.ts';
 
 namespace GameObject {
@@ -1008,16 +1008,14 @@ export function august() {
 
     const clickAudio = setupSoundEffect(click);
     const explodeAudio = setupSoundEffect(explode);
+    const hissAudio = setupSoundEffect(hiss, 0.3);
     const mineAudio = setupSoundEffect(mine);
     const musicAudio = setupMusic(music);
     const pressAudio = setupSoundEffect(press);
     const winAudio = setupSoundEffect(win);
-    const tickAudios = [tick1, tick2, tick3, tick4, tick5, tick6].map(setupSoundEffect);
-    const splashAudios = [splash1, splash2].map(setupSoundEffect);
+    const tickAudios = [tick1, tick2, tick3, tick4, tick5, tick6].map(tick => setupSoundEffect(tick));
+    const splashAudios = [splash1, splash2].map(splash => setupSoundEffect(splash));
     const storage = setupStorage('august');
-
-    const hissAudio = setupSoundEffect(hiss);
-    hissAudio.volume = 0.3;
 
     let state: State.Any = {type: 'menu'};
     let done = false;
@@ -1113,7 +1111,6 @@ export function august() {
             return;
         }
 
-        pressAudio.currentTime = 0;
         pressAudio.play();
     }
 
@@ -1156,9 +1153,7 @@ export function august() {
                     if (typeof object.fallState === 'number') {
                         object.fallState += delta * FALL_SPEED;
                         if (!object.halfClackPlayed && object.fallState > 0.5) {
-                            const tickAudio = choice(tickAudios);
-                            tickAudio.currentTime = 0;
-                            tickAudio.play();
+                            choice(tickAudios).play();
                             object.halfClackPlayed = true;
                         }
                         if (object.fallState >= 1) {
@@ -1540,7 +1535,6 @@ export function august() {
 
         for (const object of state.level) {
             if (object.type === 'piston' && object.extendState === false && x === object.x && y === object.y) {
-                hissAudio.currentTime = 0;
                 hissAudio.play();
                 object.extendState = 0;
                 return;

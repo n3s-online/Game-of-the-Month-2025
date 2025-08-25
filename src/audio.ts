@@ -11,11 +11,39 @@ export async function downloadAndDecode(src: string) {
     return await audioContext.decodeAudioData(arrayBuffer);
 }
 
-export function setupSoundEffect(src: string) {
-    const audio = new Audio(src);
-    const node = audioContext.createMediaElementSource(audio);
-    node.connect(soundEffectsGain);
-    return audio;
+export function setupSoundEffect(src: string, volume?: number) {
+    const promise = downloadAndDecode(src);
+
+    let source: AudioBufferSourceNode | undefined = undefined;
+
+    return {
+        play: (playbackRate?: number) => {
+            promise.then(decoded => {
+                source = audioContext.createBufferSource();
+                source.buffer = decoded;
+
+                if (playbackRate !== undefined) {
+                    source.playbackRate.setValueAtTime(playbackRate, audioContext.currentTime);
+                }
+
+                if (volume !== undefined) {
+                    const gain = audioContext.createGain();
+                    gain.gain.setValueAtTime(volume, audioContext.currentTime);
+                    source.connect(gain);
+                    gain.connect(soundEffectsGain);
+                } else {
+                    source.connect(soundEffectsGain);
+                }
+
+                source.start();
+            });
+        },
+        pause: () => {
+            if (source === undefined) return;
+            source.stop();
+            source = undefined;
+        },
+    };
 }
 
 // Music needs to be setup through a buffer so it loops seamlessly

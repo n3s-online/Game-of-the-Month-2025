@@ -105,11 +105,7 @@ export function july() {
     const loseAudio = setupSoundEffect(lose);
     const winAudio = setupSoundEffect(win);
     const hissAudio = setupSoundEffect(hiss);
-    const scribbleAudios = [scribble1, scribble2, scribble3].map(src => {
-        const audio = setupSoundEffect(src);
-        audio.preservesPitch = false;
-        return audio;
-    });
+    const scribbleAudios = [scribble1, scribble2, scribble3].map(src => setupSoundEffect(src));
 
     const storage = setupStorage('july');
 
@@ -124,10 +120,7 @@ export function july() {
     });
 
     function playScribble() {
-        const audio = choice(scribbleAudios);
-        audio.currentTime = 0;
-        audio.playbackRate = Math.random() / 10 + 1;
-        audio.play();
+        choice(scribbleAudios).play(Math.random() / 10 + 1);
     }
 
     function position(top: number) {

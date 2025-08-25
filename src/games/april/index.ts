@@ -445,7 +445,6 @@ export function april() {
         const hasWall = level.walls?.some(([wx, wy]) => wx === nx && wy === ny) ?? false;
         if (hasWall) {
             if (bites === 0) return;
-            eatAudio.currentTime = 0;
             eatAudio.play();
             level.walls!.splice(
                 level.walls!.findIndex(([wx, wy]) => wx === nx && wy === ny),
@@ -456,7 +455,6 @@ export function april() {
 
         const hasBoost = (level.boosts ?? []).some(([wx, wy]) => wx === nx && wy === ny);
         if (hasBoost) {
-            eatAudio.currentTime = 0;
             eatAudio.play();
             level.boosts = level.boosts!.filter(([wx, wy]) => wx !== nx || wy !== ny);
             (state as State.Play).bites += 3;

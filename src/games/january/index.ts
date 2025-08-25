@@ -521,9 +521,7 @@ export function january() {
     }
 
     function gameOver(win = false) {
-        const audio = win ? winAudio : loseAudio;
-        audio.currentTime = 0;
-        audio.play();
+        (win ? winAudio : loseAudio).play();
         playing = false;
         const highScore = storage.get(`${boardSize}-${speed}`);
         if (highScore === undefined || worm.length > highScore) storage.set(`${boardSize}-${speed}`, worm.length);
@@ -539,7 +537,6 @@ export function january() {
     }
 
     function eatFood() {
-        eatAudio.currentTime = 0;
         eatAudio.play();
         lastDirection = undefined;
         updateFoods();
