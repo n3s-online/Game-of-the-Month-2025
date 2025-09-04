@@ -1083,7 +1083,9 @@ export function august() {
             winAudio.play();
             state.complete = true;
 
-            storage.set('nextLevel', Math.min(LEVELS.length, +(storage.get('nextLevel') ?? '0') + 1));
+            if (+(storage.get('nextLevel') ?? '0') <= state.levelIndex) {
+                storage.set('nextLevel', state.levelIndex + 1);
+            }
 
             const notLastLevel = state.levelIndex !== LEVELS.length - 1;
 

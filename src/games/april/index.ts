@@ -468,7 +468,10 @@ export function april() {
         if (nx === level.end[0] && ny === level.end[1]) {
             winAudio.play();
             (state as State.Play).levelComplete = true;
-            storage.set('nextLevel', Math.min(LEVELS.length, +(storage.get('nextLevel') ?? '0') + 1));
+
+            if (+(storage.get('nextLevel') ?? '0') <= (state as State.Play).levelIndex) {
+                storage.set('nextLevel', Math.min(LEVELS.length, (state as State.Play).levelIndex + 1));
+            }
 
             setOverlay(`
                 <div class="center">
