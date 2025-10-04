@@ -9,6 +9,8 @@ import {may} from './games/may';
 import {june} from './games/june';
 import {july} from './games/july';
 import {august} from './games/august';
+import {september} from './games/september';
+import GameWorker from './shared/worker.ts?worker';
 
 const games = [
     january,
@@ -19,13 +21,15 @@ const games = [
     june,
     july,
     august,
-    makeTextbox('Coming Saturday September 27th'),
-    makeTextbox('Coming Saturday October 18th'),
+    september,
+    makeTextbox('Coming Saturday October 25th'),
     makeTextbox('Coming Saturday November 15th'),
     makeTextbox('Coming Saturday December 20th'),
 ];
 
-const defaultMonthIndex = 7;
+const defaultMonthIndex = 8;
+
+const worker = new GameWorker();
 
 let monthIndex: number;
 let callback: (() => void) | undefined = undefined;
@@ -44,14 +48,14 @@ function getMonthString() {
     return new Date(2025, monthIndex).toLocaleString('en-US', {month: 'long'});
 }
 
-export function openPage(runner: () => () => void) {
+export function openPage(runner: (worker: Worker) => () => void) {
     if (callback !== undefined) {
         callback();
         callback = undefined;
     }
     clearOverlay();
     context.reset();
-    startStatic(() => (callback = runner()));
+    startStatic(() => (callback = runner(worker)));
 }
 
 export function loadGame() {

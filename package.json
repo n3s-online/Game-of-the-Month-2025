@@ -10,12 +10,13 @@
     },
     "devDependencies": {
         "prettier": "^3.6.2",
-        "typescript": "~5.9.2",
-        "vite": "^7.1.2"
+        "typescript": "~5.9.3",
+        "vite": "^7.1.9"
     },
     "dependencies": {
         "@types/ga-gtag": "^1.2.0",
         "@types/random-seed": "^0.3.5",
+        "decimal.js": "^10.6.0",
         "random-seed": "^0.3.0"
     }
 }
