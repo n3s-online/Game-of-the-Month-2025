@@ -233,7 +233,7 @@ export function september(worker: Worker) {
                     <button id="september-granularity-plus" class="dark">+</button>
                 </div>
                 <span id="september-angle-value" style="display: none; font-size: 24px"></span>
-                <div style="display: none; align-items: center; gap: 5px" class="september-hide">
+                <div style="display: none; align-items: center; gap: 25px" class="september-hide">
                     <button id="september-angle-minus" class="dark">&lt;</button>
                     <button id="september-launch-button" class="dark">LAUNCH</button>
                     <button id="september-angle-plus" class="dark">&gt;</button>
