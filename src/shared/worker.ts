@@ -19,6 +19,7 @@ namespace SeptemberMessage {
         angle: string;
         negatives: Negative[];
         start: {x: string; y: string};
+        precision: number;
     }
 
     export interface Score {
@@ -34,6 +35,7 @@ let septemberLatestAngle: string | undefined = undefined;
 
 async function september(message: SeptemberMessage.Any) {
     if (message.type === 'angle') {
+        Decimal.config({precision: message.precision});
         septemberLatestAngle = message.angle;
         postMessage({month: 'september', data: {type: 'clear'}});
 

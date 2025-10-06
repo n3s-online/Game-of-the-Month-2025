@@ -92,6 +92,10 @@ export function september(worker: Worker) {
         loopSource.gain.gain.setValueAtTime(1, audioContext.currentTime);
     });
 
+    function getPrecision() {
+        return Math.abs(angleIncrement.e) + DECIMAL_PRECISION_PADDING;
+    }
+
     function howToPlay() {
         clickAudio.play();
 
@@ -286,6 +290,7 @@ export function september(worker: Worker) {
                 angle: newAngle.toPrecision(),
                 negatives,
                 start: {x: positive.x.toPrecision(), y: positive.y.toPrecision()},
+                precision: getPrecision(),
             },
         });
 
@@ -335,7 +340,7 @@ export function september(worker: Worker) {
     function adjustIncrement(factor: number) {
         angleIncrement = angleIncrement.times(factor);
         if (angleIncrement.gt(0.1)) angleIncrement = new Decimal(0.1);
-        Decimal.config({precision: Math.abs(angleIncrement.e) + DECIMAL_PRECISION_PADDING});
+        Decimal.config({precision: getPrecision()});
         document.getElementById('september-granularity-value')!.textContent = Math.abs(angleIncrement.e).toString();
     }
 
