@@ -11,7 +11,9 @@ export type PieceTypeKey =
     | 'can'
     | 'bomb'
     | 'chargedBattery'
-    | 'lowBattery';
+    | 'lowBattery'
+    | 'frog'
+    | 'magnet';
 
 export interface Position {
     x: number;
@@ -287,6 +289,33 @@ export const PIECES: Record<PieceTypeKey, PieceType> = {
             for (const position of getNeighbors(piece)) yield {position, type: 'both'};
         },
     },
+    frog: {
+        symbol: '🐸',
+        enemy: false,
+        value: 1,
+        generateMoves: function* (pieces: Piece[], piece: Piece) {
+            for (const position of getNeighbors(piece)) {
+                const other = pieces.find(other => position.x === other.position.x && position.y === other.position.y);
+                if (other !== undefined && other.piece === 'frog') {
+                    yield {
+                        position: {
+                            x: piece.position.x + (other.position.x - piece.position.x) * 2,
+                            y: piece.position.y + (other.position.y - piece.position.y) * 2,
+                        },
+                        type: 'both',
+                    };
+                }
+            }
+        },
+    },
+    magnet: {
+        symbol: '🧲',
+        enemy: false,
+        value: 2,
+        generateMoves: function* (_: Piece[], piece: Piece) {
+            for (const position of getNeighbors(piece)) yield {position, type: 'move'};
+        },
+    },
 };
 
 export function isPlayerThreateningKing(board: BoardState) {
@@ -315,35 +344,63 @@ export function executeMove(board: BoardState, from: Position, to: Position): ()
     };
 }
 
+function invalidMove(
+    position: Position,
+    boardSize: Position,
+    walls: Position[],
+    pieces: Piece[],
+    piece: Piece,
+    type: 'move' | 'capture' | 'both',
+    board: BoardState,
+) {
+    if (
+        position.x < 0 ||
+        position.x >= boardSize.x ||
+        position.y < 0 ||
+        position.y >= boardSize.y ||
+        walls.some(wall => wall.x === position.x && wall.y === position.y)
+    ) {
+        return true;
+    }
+
+    const target = findPiece(pieces, position);
+    if (
+        (target && PIECES[target.piece].enemy === PIECES[piece.piece].enemy) ||
+        (type === 'move' && target) ||
+        (type === 'capture' && !target)
+    ) {
+        return true;
+    }
+
+    if (PIECES[piece.piece].enemy) {
+        const tempBoard = structuredClone(board);
+        executeMove(tempBoard, piece.position, position);
+        if (isPlayerThreateningKing(tempBoard)) return true;
+    }
+
+    return false;
+}
+
 export function* generatePieceMoves(board: BoardState, piece: Piece) {
     const {boardSize, walls, pieces} = board.level;
+    const positions = new Set<string>();
     for (const {position, type} of PIECES[piece.piece].generateMoves(pieces, piece, board)) {
-        if (
-            position.x < 0 ||
-            position.x >= boardSize.x ||
-            position.y < 0 ||
-            position.y >= boardSize.y ||
-            walls.some(wall => wall.x === position.x && wall.y === position.y)
-        ) {
-            continue;
-        }
+        if (invalidMove(position, boardSize, walls, pieces, piece, type, board)) continue;
 
-        const target = findPiece(pieces, position);
-        if (
-            (target && PIECES[target.piece].enemy === PIECES[piece.piece].enemy) ||
-            (type === 'move' && target) ||
-            (type === 'capture' && !target)
-        ) {
-            continue;
-        }
-
-        if (PIECES[piece.piece].enemy) {
-            const tempBoard = structuredClone(board);
-            executeMove(tempBoard, piece.position, position);
-            if (isPlayerThreateningKing(tempBoard)) continue;
-        }
-
+        const key = JSON.stringify(position);
+        if (positions.has(key)) continue;
+        positions.add(key);
         yield position;
+    }
+
+    for (const magnet of pieces.filter(piece => piece.piece === 'magnet')) {
+        for (const position of getNeighbors(magnet)) {
+            if (invalidMove(position, boardSize, walls, pieces, piece, 'move', board)) continue;
+            const key = JSON.stringify(position);
+            if (positions.has(key)) continue;
+            positions.add(key);
+            yield position;
+        }
     }
 }
 
