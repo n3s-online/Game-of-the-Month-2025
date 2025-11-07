@@ -190,7 +190,11 @@ export function march() {
         inputElement.max = TODAY_NORM;
 
         function onDateChange(date = new Date(inputElement.value)) {
-            clickAudio.play();
+            // @ts-ignore this is the best way for checking invalid dates https://stackoverflow.com/questions/1353684
+            if (isNaN(date)) {
+                inputElement.value = getDateString(selectedDate);
+                return;
+            }
             if (date > TODAY) date = new Date(TODAY_NORM);
             else if (date < MIN_DATE) date = new Date(MIN_DATE_NORM);
             selectedDate = date;
@@ -203,17 +207,22 @@ export function march() {
             parSpan.textContent = getPar().toString();
         }
 
-        inputElement.addEventListener('change', () => onDateChange());
+        inputElement.addEventListener('change', () => {
+            clickAudio.play();
+            onDateChange();
+        });
 
         prevButton.addEventListener('click', () => {
             const date = new Date(inputElement.value);
             date.setUTCDate(date.getUTCDate() - 1);
+            clickAudio.play();
             onDateChange(date);
         });
 
         nextButton.addEventListener('click', () => {
             const date = new Date(inputElement.value);
             date.setUTCDate(date.getUTCDate() + 1);
+            clickAudio.play();
             onDateChange(date);
         });
 
