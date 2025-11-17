@@ -269,16 +269,16 @@ export function september(worker: Worker) {
         });
 
         prevButton.addEventListener('click', () => {
+            clickAudio.play();
             const date = new Date(inputElement.value);
             date.setUTCDate(date.getUTCDate() - 1);
-            clickAudio.play();
             onDateChange(date);
         });
 
         nextButton.addEventListener('click', () => {
+            clickAudio.play();
             const date = new Date(inputElement.value);
             date.setUTCDate(date.getUTCDate() + 1);
-            clickAudio.play();
             onDateChange(date);
         });
 
