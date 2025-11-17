@@ -84,7 +84,7 @@ export function september(worker: Worker) {
     let negatives: Negative[] = [];
     let negativesTemplate: Negative[] = [];
     let positive: Positive = {x: CENTER.x, y: CENTER.y, startColor: '#ffffff', endColor: '#ffffff'};
-    let positiveTemplate: Positive = {x: CENTER.x, y: CENTER.y, startColor: '#ffffff', endColor: '#ffffff'};
+    let positivesTemplate: Positive[] = [];
     let scores: number[] = [];
     let selectedDate = TODAY;
     let simulationData = {step: 0, lastX: CENTER.x.toNumber(), lastY: CENTER.y.toNumber()};
@@ -126,34 +126,40 @@ export function september(worker: Worker) {
     function generateTemplates() {
         const generator = create(getSeedFromDate(selectedDate));
 
-        // Generate positive magnet template
+        // Generate 5 different positive magnet starting positions (one for each shot)
+        positivesTemplate = [];
         const sideLength = canvas.width + MAGNET_RADIUS * 4;
-        const position = generator.random() * sideLength * 4;
-        const color = {
-            startColor: `hsl(${generator.random() * 360}, 100%, 50%)`,
-            endColor: `hsl(${generator.random() * 360}, 100%, 50%)`,
-        };
 
-        if (position < sideLength) {
-            positiveTemplate = {...color, x: new Decimal(position - MAGNET_RADIUS * 2), y: new Decimal(-MAGNET_RADIUS * 2)};
-        } else if (position < sideLength * 2) {
-            positiveTemplate = {
-                ...color,
-                x: new Decimal(canvas.width + MAGNET_RADIUS * 2),
-                y: new Decimal(position - sideLength - MAGNET_RADIUS * 2),
+        for (let i = 0; i < NUM_SHOTS; i++) {
+            const position = generator.random() * sideLength * 4;
+            const color = {
+                startColor: `hsl(${generator.random() * 360}, 100%, 50%)`,
+                endColor: `hsl(${generator.random() * 360}, 100%, 50%)`,
             };
-        } else if (position < sideLength * 3) {
-            positiveTemplate = {
-                ...color,
-                x: new Decimal(canvas.width - (position - sideLength * 2 - MAGNET_RADIUS * 2)),
-                y: new Decimal(canvas.height + MAGNET_RADIUS * 2),
-            };
-        } else {
-            positiveTemplate = {
-                ...color,
-                x: new Decimal(-MAGNET_RADIUS * 2),
-                y: new Decimal(canvas.height - (position - sideLength * 3 - MAGNET_RADIUS * 2)),
-            };
+
+            let positiveTemplate: Positive;
+            if (position < sideLength) {
+                positiveTemplate = {...color, x: new Decimal(position - MAGNET_RADIUS * 2), y: new Decimal(-MAGNET_RADIUS * 2)};
+            } else if (position < sideLength * 2) {
+                positiveTemplate = {
+                    ...color,
+                    x: new Decimal(canvas.width + MAGNET_RADIUS * 2),
+                    y: new Decimal(position - sideLength - MAGNET_RADIUS * 2),
+                };
+            } else if (position < sideLength * 3) {
+                positiveTemplate = {
+                    ...color,
+                    x: new Decimal(canvas.width - (position - sideLength * 2 - MAGNET_RADIUS * 2)),
+                    y: new Decimal(canvas.height + MAGNET_RADIUS * 2),
+                };
+            } else {
+                positiveTemplate = {
+                    ...color,
+                    x: new Decimal(-MAGNET_RADIUS * 2),
+                    y: new Decimal(canvas.height - (position - sideLength * 3 - MAGNET_RADIUS * 2)),
+                };
+            }
+            positivesTemplate.push(positiveTemplate);
         }
 
         // Generate all negative magnets templates (one for each shot)
@@ -368,7 +374,7 @@ export function september(worker: Worker) {
         animationStartTime = performance.now();
         scores = [];
         negatives = [negativesTemplate[0]];
-        positive = {...positiveTemplate};
+        positive = {...positivesTemplate[0]};
         backgroundContext.fillStyle = `rgb(${BACKGROUND_COLOR.join(',')})`;
         backgroundContext.fillRect(0, 0, canvas.width, canvas.height);
         setAngle('center');
@@ -670,7 +676,7 @@ export function september(worker: Worker) {
             return;
         }
         negatives.push(negativesTemplate[scores.length]);
-        positive = {...positiveTemplate};
+        positive = {...positivesTemplate[scores.length]};
         gameState = 'animating';
         animationStartTime = performance.now();
         angleIncrement = new Decimal(0.01);
