@@ -12,6 +12,8 @@ import {august} from './games/august';
 import {september} from './games/september';
 import {october} from './games/october';
 import GameWorker from './shared/worker.ts?worker';
+import {gameMetadata, homepageMetadata} from './gameMetadata.ts';
+import {updateMetaTags} from './seo.ts';
 
 const games = [
     january,
@@ -35,18 +37,37 @@ const worker = new GameWorker();
 let monthIndex: number;
 let callback: (() => void) | undefined = undefined;
 
-function updateMonthFromHash() {
-    if (location.hash === '') {
+function updateMonthFromPath() {
+    const path = location.pathname;
+
+    // Homepage
+    if (path === '/' || path === '') {
         monthIndex = defaultMonthIndex;
+        updateMetaTags(homepageMetadata);
         return;
     }
 
-    const hashMonth = new Date(`${location.hash.slice(1)} 1 2025`).getMonth();
-    monthIndex = isNaN(hashMonth) || hashMonth < 0 || hashMonth > 11 ? defaultMonthIndex : hashMonth;
+    // Find game by path
+    const gameIndex = gameMetadata.findIndex(game => game.path === path);
+
+    if (gameIndex !== -1) {
+        monthIndex = gameIndex;
+        updateMetaTags(gameMetadata[gameIndex]);
+    } else {
+        // Invalid path, redirect to homepage
+        monthIndex = defaultMonthIndex;
+        navigateToGame(defaultMonthIndex);
+    }
 }
 
 function getMonthString() {
     return new Date(2025, monthIndex).toLocaleString('en-US', {month: 'long'});
+}
+
+function navigateToGame(index: number) {
+    const path = gameMetadata[index]?.path || '/';
+    history.pushState(null, '', path);
+    updateMetaTags(gameMetadata[index] || homepageMetadata);
 }
 
 export function openPage(runner: (worker: Worker) => () => void) {
@@ -70,17 +91,46 @@ export function loadGame() {
 
 prevButton.addEventListener('click', () => {
     --monthIndex;
-    location.hash = getMonthString();
+    navigateToGame(monthIndex);
+    loadGame();
 });
 
 nextButton.addEventListener('click', () => {
     ++monthIndex;
-    location.hash = getMonthString();
-});
-
-window.addEventListener('hashchange', () => {
-    updateMonthFromHash();
+    navigateToGame(monthIndex);
     loadGame();
 });
 
-updateMonthFromHash();
+// Handle browser back/forward buttons
+window.addEventListener('popstate', () => {
+    updateMonthFromPath();
+    loadGame();
+});
+
+// Backwards compatibility: redirect hash URLs to path URLs
+function handleHashRedirect() {
+    const hash = location.hash;
+    if (hash && hash !== '') {
+        // Extract month name from hash (e.g., "#February" -> "February")
+        const monthName = hash.slice(1);
+        const monthDate = new Date(`${monthName} 1 2025`);
+        const monthNum = monthDate.getMonth();
+
+        // If valid month, redirect to path-based URL
+        if (!isNaN(monthNum) && monthNum >= 0 && monthNum <= 11) {
+            const targetPath = gameMetadata[monthNum]?.path || '/';
+            history.replaceState(null, '', targetPath);
+            updateMetaTags(gameMetadata[monthNum] || homepageMetadata);
+        } else {
+            // Invalid hash, clear it
+            history.replaceState(null, '', '/');
+            updateMetaTags(homepageMetadata);
+        }
+    }
+}
+
+// Check for hash on initial load and redirect if needed
+handleHashRedirect();
+
+// Initialize from current path
+updateMonthFromPath();
