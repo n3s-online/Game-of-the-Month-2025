@@ -259,7 +259,8 @@ export function september(worker: Worker) {
             prevButton.disabled = inputElement.value <= MIN_DATE_NORM;
             nextButton.disabled = inputElement.value >= TODAY_NORM;
             generateTemplates();
-            bestScoreSpan.textContent = `${storage.get(`bestScore-${getDateString(date)}`) ?? '-'}`;
+            const bestScore = storage.get(`bestScore-${getDateString(date)}`);
+            bestScoreSpan.textContent = bestScore !== undefined ? `${bestScore.toFixed(2)}%` : '-';
         }
 
         inputElement.addEventListener('change', () => {
@@ -327,7 +328,7 @@ export function september(worker: Worker) {
                 <p><strong>${getHumanReadableDateString(selectedDate)}</strong></p>
                 <p>${scoreBreakdown.join('</p><p>')}</p>
                 <p><strong>Final score</strong>: ${finalScore.toFixed(2)}%</p>
-                <p><strong>${newBest ? '[NEW] ' : ''}Best score for this day</strong>: ${storage.get(`bestScore-${getDateString(selectedDate)}`) ?? '-'}%</p>
+                <p><strong>${newBest ? '[NEW] ' : ''}Best score for this day</strong>: ${(storage.get(`bestScore-${getDateString(selectedDate)}`) ?? 0).toFixed(2)}%</p>
                 <div style="display: flex; gap: 5px">
                     <button id="september-menu-button" class="light">MENU</button>
                     <button id="september-restart-button" class="light">RESTART</button>
