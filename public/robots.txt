@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gotm.doteye.online/sitemap.xml
