@@ -219,14 +219,14 @@ export function september(worker: Worker) {
 
         gameState = 'mainMenu';
         setOverlay(`
-            <div class="center" style="display: flex; flex-direction: column; gap: 25px">
+            <div class="center" style="display: flex; flex-direction: column; gap: 10px">
                 <img src="${logo}" alt="Drawn Together" />
                 <div style="display: flex; gap: 10px">
                     <button id="september-prev-button" class="dark">Prev</button>
                     <input type="date" min="${getDateString(MIN_DATE)}" style="background-color: var(--ui-black); color: var(--ui-white); color-scheme: dark">
                     <button id="september-next-button" class="dark">Next</button>
                 </div>
-                <span><strong>Best score</strong>: <span id="september-best-score">-</span></span>
+                <span style="color: black"><strong>Best score</strong>: <span id="september-best-score">-</span></span>
                 <button id="september-play-button" class="dark">PLAY</button>
                 <button id="september-how-to-play-button" class="dark">HOW TO PLAY</button>
                 <button id="september-music-credits-button" class="link" style="color: var(--ui-black)">Drawn Together Music Credits</button>
